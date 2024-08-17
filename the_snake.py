@@ -19,7 +19,8 @@ RIGHT = (1, 0)
 BOARD_BACKGROUND_COLOR = (0, 0, 0)
 
 
-BORDER_COLOR = (93, 216, 228)
+BORDER_COLOR = (0, 0, 0)  # Убрал рамку у клеток, лучше не возвращать
+# Не могу найти ошибку, уже все потыкал, но если рамка есть то гг
 
 
 APPLE_COLOR = (255, 0, 0)
@@ -54,8 +55,10 @@ class GameObject():
         pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
     def draw(self):
-        """Метод затычка для Pytes, он не нужен как и этот докстринг"""
-        pass
+        """Мы не забыли этот метод реализовать,
+
+        а предполагаем его реализацию только в дочерних классах"""
+        raise NotImplementedError('будет реализовано в дочерних классах')
 
 
 class Apple(GameObject):
@@ -101,6 +104,7 @@ class Snake(GameObject):
         """Инициализирует змейкy с длиной и направлением по умолчанию."""
         super().__init__(body_color=SNAKE_COLOR)
         self.reset()
+        self.direction = RIGHT
 
     def update_direction(self):
         """Обновляет направление движения змейки."""
@@ -124,8 +128,9 @@ class Snake(GameObject):
 
     def draw(self):
         """Рисует змейку на экране."""
-        for position in self.positions:
-            self.draw_cell(position)
+        self.draw_cell(self.positions[0])
+        if self.last:
+            self.draw_cell(self.last, color=BOARD_BACKGROUND_COLOR)
 
     def get_head_position(self):
         """Возвращает текущую позицию головы змейки."""
@@ -187,10 +192,10 @@ def main():
             snake.grow()
             apple.randomize_position(snake.positions)
 
-        if snake.get_head_position() in snake.positions[1:]:
+        elif snake.get_head_position() in snake.positions[1:]:
             snake.reset()
+            screen.fill(BOARD_BACKGROUND_COLOR)
 
-        screen.fill(BOARD_BACKGROUND_COLOR)
         apple.draw()
         snake.draw()
         pg.display.update()
