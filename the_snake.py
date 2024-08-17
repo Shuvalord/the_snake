@@ -53,9 +53,9 @@ class GameObject():
         pg.draw.rect(screen, color, rect)
         pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
-    def draw(self): 
+    def draw(self):
+        """Метод затычка для Pytes, он не нужен как и этот докстринг"""
         pass
-# Метод затычка, он не нужен, но Pytest без него не работает
 
 
 class Apple(GameObject):
