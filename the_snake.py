@@ -38,8 +38,7 @@ clock = pygame.time.Clock()
 
 class GameObject():
     """
-    Родительный класс для всех объектов.
-    Имеет 2 метода. Добавил сюда Draw чтоб сделать типо наследие.
+    Родительный класс для всех объектов змейки.
     """
 
     def __init__(self):
@@ -47,12 +46,19 @@ class GameObject():
         self.body_color = None
 
     def draw(self):
+        """
+        Метод Draw рисует объекты. Добавил для наследования.
+        """
         rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Apple(GameObject):
+    """
+    Дочерний класс Apple. Имеет инициализацию,
+    метод создающий яблоко на рандомной позииции.
+    """
 
     def __init__(self):
         self.body_color = APPLE_COLOR
@@ -74,6 +80,10 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
+    """
+    Дочерний класс Snake. Тут создается змея, двигается, меняет направление,
+    Reset змеи и ее направления.
+    """
 
     def __init__(self):
         super().__init__()
