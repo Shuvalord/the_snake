@@ -1,7 +1,5 @@
 from random import choice, randint
-
 import pygame as pg
-
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
@@ -9,36 +7,24 @@ GRID_WIDTH = SCREEN_WIDTH // GRID_SIZE
 GRID_HEIGHT = SCREEN_HEIGHT // GRID_SIZE
 CENTER_POSITION = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-
 UP = (0, -1)
 DOWN = (0, 1)
 LEFT = (-1, 0)
 RIGHT = (1, 0)
 
-
 BOARD_BACKGROUND_COLOR = (0, 0, 0)
-
-
-BORDER_COLOR = (0, 0, 0)  # Убрал рамку у клеток, лучше не возвращать
-# Не могу найти ошибку, уже все потыкал, но если рамка есть то гг
-
-
+BORDER_COLOR = (0, 0, 0)
 APPLE_COLOR = (255, 0, 0)
-
-
 SNAKE_COLOR = (0, 255, 0)
-
 
 SPEED = 20
 
 screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
-
 pg.display.set_caption('Змейка')
-
 clock = pg.time.Clock()
 
 
-class GameObject():
+class GameObject:
     """Родительный класс для всех объектов змейки."""
 
     def __init__(self, position=CENTER_POSITION, body_color=None):
@@ -70,9 +56,11 @@ class Apple(GameObject):
     Управляет позицией яблока и гарантирует, что оно не появится внутри змейки.
     """
 
-    def __init__(self, occupied_positions=[]):
+    def __init__(
+        self, position=None, body_color=APPLE_COLOR, occupied_positions=[]
+    ):
         """Инициализирует объект яблока с рандомной позицией."""
-        super().__init__(body_color=APPLE_COLOR)
+        super().__init__(position=position, body_color=body_color)
         self.randomize_position(occupied_positions)
 
     def randomize_position(self, occupied_positions):
@@ -80,7 +68,6 @@ class Apple(GameObject):
         Рандомизирует позицию яблока.
 
         Гарантирует, что яблоко не появится внутри змейки.
-        snake_positions Список кортежей, представляющих позиции тела змейки.
         """
         while True:
             self.position = (
@@ -102,9 +89,9 @@ class Snake(GameObject):
     Управляет движением, ростом и обнаружением столкновений змейки.
     """
 
-    def __init__(self):
+    def __init__(self, position=CENTER_POSITION, body_color=SNAKE_COLOR):
         """Инициализирует змейкy с длиной и направлением по умолчанию."""
-        super().__init__(body_color=SNAKE_COLOR)
+        super().__init__(position=position, body_color=body_color)
         self.reset()
         self.direction = RIGHT
 
@@ -182,7 +169,7 @@ def main():
     """Главная функция для запуска игрового цикла."""
     pg.init()
     snake = Snake()
-    apple = Apple(snake.positions)
+    apple = Apple(occupied_positions=snake.positions)
 
     while True:
         clock.tick(SPEED)
